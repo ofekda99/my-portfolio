@@ -24,4 +24,19 @@ describe("Home", () => {
       "mailto:ofekda9@gmail.com",
     );
   });
+
+  it("renders the projects showcase", () => {
+    render(<Home />);
+    expect(
+      screen.getByRole("heading", { name: "ApprovalFlow" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Smart Delivery Management System",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Project Cost Manager" }),
+    ).toBeInTheDocument();
+  });
 });
