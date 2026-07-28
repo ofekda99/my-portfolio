@@ -1,38 +1,16 @@
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 
-type SocialLink = {
+export type SocialLink = {
   href: string;
   label: string;
   icon: IconType;
   external: boolean;
 };
 
-const SOCIAL_LINKS: SocialLink[] = [
-  {
-    href: "https://github.com/ofekda99",
-    label: "GitHub",
-    icon: FaGithub,
-    external: true,
-  },
-  {
-    href: "https://linkedin.com/in/ofek-dahari",
-    label: "LinkedIn",
-    icon: FaLinkedin,
-    external: true,
-  },
-  {
-    href: "mailto:ofekda9@gmail.com",
-    label: "Email",
-    icon: FaEnvelope,
-    external: false,
-  },
-];
-
-export default function SocialLinks() {
+export default function SocialLinks({ links }: { links: SocialLink[] }) {
   return (
     <div className="flex items-center gap-6">
-      {SOCIAL_LINKS.map(({ href, label, icon: Icon, external }) => (
+      {links.map(({ href, label, icon: Icon, external }) => (
         <a
           key={label}
           href={href}

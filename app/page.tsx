@@ -1,4 +1,5 @@
 import SocialLinks from "./components/SocialLinks";
+import { SOCIAL_LINKS } from "./config/social-links";
 
 export default function Home() {
   return (
@@ -7,7 +8,7 @@ export default function Home() {
         <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
           Ofek Dahari
         </h1>
-        <SocialLinks />
+        <SocialLinks links={SOCIAL_LINKS} />
       </main>
     </div>
   );
