@@ -12,7 +12,7 @@ export default function SocialLinks({ links }: { links: SocialLink[] }) {
     <div className="flex items-center gap-6">
       {links.map(({ href, label, icon: Icon, external }) => (
         <a
-          key={label}
+          key={href}
           href={href}
           aria-label={label}
           {...(external

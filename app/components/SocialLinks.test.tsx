@@ -31,6 +31,7 @@ describe("SocialLinks", () => {
     const link = screen.getByRole("link", { name: "Internal Example" });
     expect(link).toHaveAttribute("href", "mailto:test@example.com");
     expect(link).not.toHaveAttribute("target");
+    expect(link).not.toHaveAttribute("rel");
   });
 
   it("renders exactly the links it's given", () => {
