@@ -1,3 +1,5 @@
+import { FaGithub, FaArrowUpRightFromSquare } from "react-icons/fa6";
+
 export type Project = {
   name: string;
   description: string;
@@ -25,14 +27,15 @@ export default function ProjectCard({ project }: { project: Project }) {
         ))}
       </ul>
       {(githubUrl || liveUrl) && (
-        <div className="flex gap-4 text-sm font-medium">
+        <div className="flex gap-3 text-sm font-medium">
           {githubUrl && (
             <a
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-950 hover:underline dark:text-zinc-50"
+              className="flex items-center gap-1.5 rounded-full border border-zinc-200 px-3 py-1.5 text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
             >
+              <FaGithub aria-hidden="true" size={14} />
               View Code
             </a>
           )}
@@ -41,8 +44,9 @@ export default function ProjectCard({ project }: { project: Project }) {
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-950 hover:underline dark:text-zinc-50"
+              className="flex items-center gap-1.5 rounded-full border border-zinc-200 px-3 py-1.5 text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
             >
+              <FaArrowUpRightFromSquare aria-hidden="true" size={12} />
               Live Demo
             </a>
           )}

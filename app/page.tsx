@@ -11,6 +11,9 @@ export default function Home() {
           <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
             Ofek Dahari
           </h1>
+          <p className="text-base text-zinc-600 dark:text-zinc-400">
+            Full-Stack Developer
+          </p>
           <SocialLinks links={SOCIAL_LINKS} />
         </div>
         <Projects projects={PROJECTS} />
