@@ -6,9 +6,9 @@ export default function Projects({ projects }: { projects: Project[] }) {
       <h2 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
         Projects
       </h2>
-      <div className="grid w-full gap-6 sm:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard key={project.name} project={project} />
+      <div className="flex w-full flex-col gap-6">
+        {projects.map((project, index) => (
+          <ProjectCard key={project.name} project={project} index={index} />
         ))}
       </div>
     </section>

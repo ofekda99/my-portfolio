@@ -1,3 +1,4 @@
+import ScrollReveal from "./ScrollReveal";
 import { FaGithub, FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 export type Project = {
@@ -8,10 +9,20 @@ export type Project = {
   liveUrl?: string;
 };
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  index = 0,
+}: {
+  project: Project;
+  index?: number;
+}) {
   const { name, description, techStack, githubUrl, liveUrl } = project;
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 text-left dark:border-zinc-800 dark:bg-black">
+    <ScrollReveal
+      direction={index % 2 === 0 ? "left" : "right"}
+      delay={index * 0.1}
+      className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 text-left dark:border-zinc-800 dark:bg-black"
+    >
       <h3 className="text-xl font-semibold text-black dark:text-zinc-50">
         {name}
       </h3>
@@ -52,6 +63,6 @@ export default function ProjectCard({ project }: { project: Project }) {
           )}
         </div>
       )}
-    </div>
+    </ScrollReveal>
   );
 }
