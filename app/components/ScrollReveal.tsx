@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 
 type Direction = "up" | "left" | "right";
 
@@ -10,6 +10,16 @@ const VARIANTS: Record<Direction, Variants> = {
   left: { hidden: { opacity: 0, x: -60 }, visible: { opacity: 1, x: 0 } },
   right: { hidden: { opacity: 0, x: 60 }, visible: { opacity: 1, x: 0 } },
 };
+
+const noopSubscribe = () => () => {};
+
+function useHasMounted() {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+}
 
 export default function ScrollReveal({
   children,
@@ -22,6 +32,15 @@ export default function ScrollReveal({
   delay?: number;
   className?: string;
 }) {
+  const mounted = useHasMounted();
+
+  // Content renders fully visible by default (server-rendered and no-JS
+  // fallback). The reveal animation only kicks in once JS has confirmed
+  // it's running, so the animation never leaves content permanently hidden.
+  if (!mounted) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"

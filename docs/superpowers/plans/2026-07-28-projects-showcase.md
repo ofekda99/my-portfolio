@@ -19,7 +19,7 @@ This split was a deliberate decision after comparing it against a single-compone
 
 **Architecture:** `app/components/ProjectCard.tsx` (single item, owns the `Project` type) → consumed by `app/components/Projects.tsx` (wrapper/layout) → consumed by `app/page.tsx`. Real project data lives in `app/data/projects.ts`, matching the `SocialLinks` / `app/data/social-links.ts` split. Tested with Jest + React Testing Library.
 
-**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Jest + React Testing Library, pnpm. No new dependencies needed.
+**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Jest + React Testing Library, pnpm. Originally scoped with no new dependencies; `framer-motion` and `react-icons/si` (Simple Icons) were added later in this same plan (Tasks 8-9 and 12) once scroll-reveal animation and tech-tag icons were requested.
 
 ## Global Constraints
 
@@ -1143,7 +1143,7 @@ Expected: lint, format:check, typecheck, and full test suite all pass.
 
 - [ ] **Step 5: Manual verification**
 
-In the browser: confirm each mapped tech tag shows its brand icon + a soft color-tinted pill matching that tech's identity (purple .NET, blue PostgreSQL, red Redis, cyan React, blue TypeScript, blue Docker, etc.); confirm unmapped techs (YARP, EF Core, ASP.NET Core, SQL Server, Groq API, Supertest) still show as plain gray pills, no broken icon/blank space; confirm dark mode still reads correctly, especially the `Express` gray override.
+In the browser: confirm each tech tag shows its brand icon + a soft color-tinted pill matching that tech's identity (purple .NET, blue PostgreSQL, red Redis, cyan React, blue TypeScript, blue Docker, etc.). Note: this step was written before the closest-match fallback icons were added — `YARP`, `EF Core`, `ASP.NET Core`, `SQL Server`, and `Groq API` now render mapped fallback icons too (network, database, and bolt icons respectively) rather than plain text; `Supertest` also got a fallback icon. `Express` renders amber, not gray (see the color revision note above `TECH_ICONS`). Confirm dark mode still reads correctly.
 
 - [ ] **Step 6: Commit**
 
