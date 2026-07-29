@@ -31,7 +31,7 @@ export default function ProjectCard({
         {techStack.map((tech) => (
           <li
             key={tech}
-            className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+            className="rounded-full bg-indigo-50 px-3 py-1 text-xs text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
           >
             {tech}
           </li>
@@ -44,7 +44,7 @@ export default function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-zinc-200 px-3 py-1.5 text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
+              className="flex items-center gap-1.5 rounded-full border border-indigo-200 px-3 py-1.5 text-indigo-700 transition-colors hover:border-indigo-400 hover:bg-indigo-50 dark:border-indigo-900 dark:text-indigo-300 dark:hover:border-indigo-700 dark:hover:bg-indigo-950"
             >
               <FaGithub aria-hidden="true" size={14} />
               View Code
@@ -55,7 +55,7 @@ export default function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-zinc-200 px-3 py-1.5 text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
+              className="flex items-center gap-1.5 rounded-full border border-indigo-200 px-3 py-1.5 text-indigo-700 transition-colors hover:border-indigo-400 hover:bg-indigo-50 dark:border-indigo-900 dark:text-indigo-300 dark:hover:border-indigo-700 dark:hover:bg-indigo-950"
             >
               <FaArrowUpRightFromSquare aria-hidden="true" size={12} />
               Live Demo

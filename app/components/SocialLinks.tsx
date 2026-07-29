@@ -18,7 +18,7 @@ export default function SocialLinks({ links }: { links: SocialLink[] }) {
           {...(external
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
-          className="text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+          className="text-zinc-600 transition-colors hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400"
         >
           <Icon size={24} />
         </a>
