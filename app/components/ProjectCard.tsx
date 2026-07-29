@@ -1,5 +1,6 @@
 import ScrollReveal from "./ScrollReveal";
 import { FaGithub, FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { TECH_ICONS } from "../data/tech-icons";
 
 export type Project = {
   name: string;
@@ -28,14 +29,31 @@ export default function ProjectCard({
       </h3>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{description}</p>
       <ul className="flex flex-wrap gap-2">
-        {techStack.map((tech) => (
-          <li
-            key={tech}
-            className="rounded-full bg-indigo-50 px-3 py-1 text-xs text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
-          >
-            {tech}
-          </li>
-        ))}
+        {techStack.map((tech) => {
+          const techIcon = TECH_ICONS[tech];
+          const Icon = techIcon?.icon;
+          return (
+            <li
+              key={tech}
+              className={
+                techIcon
+                  ? "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                  : "rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+              }
+              style={
+                techIcon
+                  ? {
+                      backgroundColor: `${techIcon.color}1a`,
+                      color: techIcon.color,
+                    }
+                  : undefined
+              }
+            >
+              {Icon && <Icon aria-hidden="true" size={14} />}
+              {tech}
+            </li>
+          );
+        })}
       </ul>
       {(githubUrl || liveUrl) && (
         <div className="flex gap-3 text-sm font-medium">

@@ -1021,6 +1021,139 @@ git commit -m "Add indigo glow behind hero, unify page background"
 
 ---
 
+## Task 12: Add brand icons and per-tech color tints to the tech tags
+
+**Why:** The user found the plain-gray and solid-indigo tag designs unimpressive, then reacted well to a widget preview showing icon + soft-color-tinted pills, once told that colors should match each tech's own brand identity rather than one uniform hue. Confirmed via `node -e` against the installed `react-icons` package which Simple Icons actually exist for our real tech stack, to avoid a broken import: `SiDotnet`, `SiDapr`, `SiPostgresql`, `SiRedis`, `SiReact`, `SiTypescript`, `SiVite`, `SiDocker`, `SiGooglegemini`, `SiLeaflet`, `SiNodedotjs`, `SiExpress`, `SiMongodb`, `SiMongoose`, `SiJest` all exist; `SiGroq`, `SiAspnetcore`, `SiMicrosoftsqlserver`, `SiSupertest` do not (plus YARP and EF Core have no icon anywhere) — those techs fall back to the original plain gray pill, no icon.
+
+**Files:**
+
+- Create: `app/data/tech-icons.ts` (tech name → `{ icon, color }` lookup table)
+- Modify: `app/components/ProjectCard.tsx` (tag rendering: icon + color-tinted pill when mapped, original plain pill when not)
+
+**No new tests needed:** existing `ProjectCard.test.tsx` fixtures use `"React"` and `"Node.js"` (both mapped) and `"C#"` (unmapped, deliberately exercises the fallback path already) — text content assertions (`getByText`) are unaffected by whether an icon renders alongside the text, so this is the regression check.
+
+- [ ] **Step 1: Create the tech icon lookup table**
+
+Create `app/data/tech-icons.ts`:
+
+```ts
+import type { IconType } from "react-icons";
+import {
+  SiDotnet,
+  SiDapr,
+  SiPostgresql,
+  SiRedis,
+  SiReact,
+  SiTypescript,
+  SiVite,
+  SiDocker,
+  SiGooglegemini,
+  SiLeaflet,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiMongoose,
+  SiJest,
+} from "react-icons/si";
+import { FaDatabase, FaBolt, FaNetworkWired, FaVial } from "react-icons/fa6";
+
+export type TechIcon = {
+  icon: IconType;
+  color: string;
+};
+
+export const TECH_ICONS: Record<string, TechIcon> = {
+  ".NET 10": { icon: SiDotnet, color: "#512BD4" },
+  ".NET 8": { icon: SiDotnet, color: "#512BD4" },
+  "ASP.NET Core": { icon: SiDotnet, color: "#512BD4" },
+  "Dapr Workflow": { icon: SiDapr, color: "#0F9BCC" },
+  PostgreSQL: { icon: SiPostgresql, color: "#4169E1" },
+  Redis: { icon: SiRedis, color: "#DC382D" },
+  React: { icon: SiReact, color: "#0891B2" },
+  TypeScript: { icon: SiTypescript, color: "#3178C6" },
+  Vite: { icon: SiVite, color: "#646CFF" },
+  "Docker Compose": { icon: SiDocker, color: "#2496ED" },
+  "Gemini API": { icon: SiGooglegemini, color: "#4285F4" },
+  "Leaflet.js": { icon: SiLeaflet, color: "#199900" },
+  "Node.js": { icon: SiNodedotjs, color: "#339933" },
+  Express: { icon: SiExpress, color: "#D97706" },
+  MongoDB: { icon: SiMongodb, color: "#47A248" },
+  Mongoose: { icon: SiMongoose, color: "#880000" },
+  Jest: { icon: SiJest, color: "#C21325" },
+  "SQL Server": { icon: FaDatabase, color: "#CC2927" },
+  "EF Core": { icon: FaDatabase, color: "#00758F" },
+  "Groq API": { icon: FaBolt, color: "#F55036" },
+  YARP: { icon: FaNetworkWired, color: "#475569" },
+  Supertest: { icon: FaVial, color: "#0D9488" },
+};
+```
+
+Revised after visual feedback (widget preview alone wasn't enough — user reviewed the live site):
+
+- **Previously-iconless techs given a closest-match fallback icon** instead of staying plain text, verified to exist via `node -e` against the installed package first: `SQL Server` and `EF Core` → generic database icon (`FaDatabase`, different colors to stay visually distinct from each other); `Groq API` → `FaBolt` (matches Groq's actual lightning-bolt brand mark); `YARP` → `FaNetworkWired` (routing/proxy concept); `Supertest` → `FaVial` (testing concept); `ASP.NET Core` → reuses the `.NET` icon/color (it _is_ a .NET technology, this is standard practice in badge systems).
+- **React's color** changed from the official `#61DAFB` (very light cyan) to `#0891B2` (a darker, more saturated cyan) — the official color is legible on React's own dark-themed docs but was hard to read as a light tint on a white card background.
+- **Express's color** changed from a neutral gray placeholder to `#D97706` (amber) — chosen deliberately distinct from `Node.js` (`#339933`) and `MongoDB` (`#47A248`), both already green and appearing in the same card (Project Cost Manager), to avoid three similar-looking green-ish tags side by side.
+
+- [ ] **Step 2: Update ProjectCard to render icon + tinted pills**
+
+In `app/components/ProjectCard.tsx`, add the import and replace the tag list rendering:
+
+```tsx
+import { TECH_ICONS } from "../data/tech-icons";
+```
+
+```tsx
+<ul className="flex flex-wrap gap-2">
+  {techStack.map((tech) => {
+    const techIcon = TECH_ICONS[tech];
+    const Icon = techIcon?.icon;
+    return (
+      <li
+        key={tech}
+        className={
+          techIcon
+            ? "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+            : "rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+        }
+        style={
+          techIcon
+            ? { backgroundColor: `${techIcon.color}1a`, color: techIcon.color }
+            : undefined
+        }
+      >
+        {Icon && <Icon aria-hidden="true" size={14} />}
+        {tech}
+      </li>
+    );
+  })}
+</ul>
+```
+
+`${techIcon.color}1a` appends an 8-digit hex alpha suffix (`1a` ≈ 10% opacity) to get a soft tinted background from each tech's full-strength brand color, without needing a second hardcoded light-variant hex per tech.
+
+- [ ] **Step 3: Run regression check**
+
+Run: `pnpm test ProjectCard`
+Expected: PASS — all 5 existing tests still green (text content assertions unaffected by icons).
+
+- [ ] **Step 4: Run full check**
+
+Run: `pnpm check`
+Expected: lint, format:check, typecheck, and full test suite all pass.
+
+- [ ] **Step 5: Manual verification**
+
+In the browser: confirm each mapped tech tag shows its brand icon + a soft color-tinted pill matching that tech's identity (purple .NET, blue PostgreSQL, red Redis, cyan React, blue TypeScript, blue Docker, etc.); confirm unmapped techs (YARP, EF Core, ASP.NET Core, SQL Server, Groq API, Supertest) still show as plain gray pills, no broken icon/blank space; confirm dark mode still reads correctly, especially the `Express` gray override.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add app/data/tech-icons.ts app/components/ProjectCard.tsx
+git commit -m "Add brand icons and per-tech color tints to tech tags"
+```
+
+---
+
 ## Verification Summary
 
 End-to-end, this plan is verified by:
